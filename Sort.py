@@ -11,10 +11,10 @@ file_exten = {
     "other" : []
 }
 
-def clean(folder):    
+def clean(folder):
     for file in os.listdir(folder):
         file_path = os.path.join(folder, file)
-        if file == 'images' or file == 'documents' or file == 'audio' or file == 'video' or file == 'archives' or file == 'other':
+        if file in files:
             continue
         elif os.path.isfile(file_path):
             sort_files(folder, file)
@@ -22,7 +22,7 @@ def clean(folder):
             subfolder = os.path.join(folder, file)
             clean(subfolder)
     for file in os.listdir(folder):
-        if file == 'images' or file == 'documents' or file == 'audio' or file == 'video' or file == 'archives' or file == 'other':
+        if file in files:
             continue
         else:
             del_folder = os.path.join(folder, file)
@@ -31,36 +31,42 @@ def clean(folder):
 
        
 def sort_files(folder, file):
+    images_path = os.path.join(folder, 'images')
+    documents_path = os.path.join(folder, 'documents')
+    audio_path = os.path.join(folder, 'audio')
+    video_path = os.path.join(folder, 'video')
+    archives_path = os.path.join(folder, 'archives')
+    other_path = os.path.join(folder, 'other')
     new_name_file = normalize(file)
     old_file_path = os.path.join(folder, file)
     new_file_path = os.path.join(folder, new_name_file)
     os.rename(old_file_path, new_file_path)
     file = new_name_file
-    if file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png') or file.endswith('.svg'):
+    if file.endswith(file_images):
         file_exten["images"].append(file)
         if not os.path.exists(images_path):
             os.makedirs(images_path)
         new_file = os.path.join(folder, file)
         new_location = shutil.move(new_file, images_path)
-    elif file.endswith('.doc') or file.endswith('.docx') or file.endswith('.txt') or file.endswith('.pdf') or file.endswith('.xlsx') or file.endswith('.pptx'):
+    elif file.endswith(file_documents):
         file_exten["documents"].append(file)
         if not os.path.exists(documents_path):
             os.makedirs(documents_path)
         new_file = os.path.join(folder, file)
         new_location = shutil.move(new_file, documents_path)
-    elif file.endswith('.avi') or file.endswith('.mp4') or file.endswith('.mov') or file.endswith('.mkv'):
+    elif file.endswith(file_video):
         file_exten["video"].append(file)
         if not os.path.exists(video_path):
             os.makedirs(video_path)
         new_file = os.path.join(folder, file)
         new_location = shutil.move(new_file, video_path)
-    elif file.endswith('.mp3') or file.endswith('.ogg') or file.endswith('.wap') or file.endswith('.amr'):
+    elif file.endswith(file_audio):
         file_exten["audio"].append(file)
         if not os.path.exists(audio_path):
             os.makedirs(audio_path)
         new_file = os.path.join(folder, file)
         new_location = shutil.move(new_file, audio_path)
-    elif file.endswith('.zip') or file.endswith('.gz') or file.endswith('.tar'):
+    elif file.endswith(file_archives):
         file_exten["archives"].append(file)
         if not os.path.exists(archives_path):
             os.makedirs(archives_path)
@@ -102,15 +108,20 @@ translit = {'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo',
       'Ц':'C','Ч':'CH','Ш':'SH','Щ':'SCH','Ъ':'','Ы':'y','Ь':'','Э':'E',
       'Ю':'U','Я':'YA','.':'.'}
     
-if __name__ == "__main__":
+files = ("images", "video", "documents", "audio", "archives","other")
+file_images = ('.jpeg', '.png', '.jpg', '.svg')
+file_video = ('.avi', '.mp4', '.mov', '.mkv')
+file_documents = ('.doc', '.docx', '.txt', '.pdf', '.xlsx', '.pptx')
+file_audio = ('.mp3', '.ogg', '.wav', '.amr')
+file_archives = ('.zip', '.gz', '.tar')
+
+
+def main():
     folder = sys.argv[1]
-    images_path = os.path.join(folder, 'images')
-    documents_path = os.path.join(folder, 'documents')
-    audio_path = os.path.join(folder, 'audio')
-    video_path = os.path.join(folder, 'video')
-    archives_path = os.path.join(folder, 'archives')
-    other_path = os.path.join(folder, 'other')
-    clean(folder)
+    clean(folder)   
+    
+if __name__ == "__main__":
+    main()
     
 print(file_exten)
 
