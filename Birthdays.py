@@ -18,15 +18,14 @@ def get_birthdays_per_week(users, days_week):
     list_day = {}
     for user in users:
         user_date = user.get("birthday") 
-        x = datetime.now()
-        y = str(x.year)
-        m = str(user_date.month)
-        d = str(user_date.day)
-        new_data = str(y + m + d)
-        new_data = datetime.strptime(new_data, '%Y%m%d')
+        new_data = datetime(
+            year=current_date.year,
+            month=user.get('birthday').month,
+            day=user.get('birthday').day
+        )
         day = datetime.weekday(new_data)
         month = current_date.month
-        days = monthrange(x.year, month)[1]
+        days = monthrange(current_date.year, month)[1]
         name = user.setdefault("name")
         if user_date.month == current_date.month: #сравн мес рожд = текущ мес
             week = current_date.day + 7
