@@ -14,6 +14,9 @@ class Phone(Field):
     def __init__(self, phone = None):
         self.value = phone
 
+    def __repr__(self):
+        return self.value
+
 
 class AddressBook(UserDict):
     def add_record(self, record):
@@ -31,8 +34,8 @@ class Record:
     def change_phone(self, old_phone, new_phone):        
         for phone in self.phones:
             if phone.value == old_phone:
-                self.phones.add_phone(new_phone)
-                self.phones.remove_phone(phone)
+                self.phones.append(new_phone)
+                self.phones.remove(phone)
             else:
                 print("Phone number doesn't exist")  
 
@@ -66,7 +69,7 @@ def add_func(user_input):
         book.add_record(add_record)
         print(f'New contact added')
     else:
-        add_phone = book.data[1]
+        add_phone = book.data[user_input[1]]
         add_phone.add_phone(user_input[2])
         print(f'New phone number has been added')
 
@@ -107,12 +110,12 @@ def hello_func(*args):
 
 
 def show_all_func(*args):
-    
     print(book.data)
 
 
-def quit_func():
-    print(result = 'Good bay!')
+def quit_func(*a):
+    result = 'Good bay!'
+    print(result)
     return result
 
 
